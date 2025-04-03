@@ -1,8 +1,21 @@
 "use client";
 import { motion } from 'framer-motion';
-import { FaArrowDown } from 'react-icons/fa';
+// import { FaArrowDown } from 'react-icons/fa';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+
+// Define interface for particles
+interface Particle {
+  shape: "circle" | "square" | "triangle" | "plus";
+  width: number;
+  height: number;
+  x: string;
+  y: string;
+  duration: number;
+  delay: number;
+  color: string;
+  rotation?: number; // Add rotation property
+}
 
 const Hero = () => {
   const [mounted, setMounted] = useState(false);
@@ -26,7 +39,7 @@ const Hero = () => {
   }, []);
 
   // Animation particles with different shapes and sizes
-  const animatedParticles = [
+  const animatedParticles: Particle[] = [
     // Circles
     { shape: "circle", width: 150, height: 150, x: "-30%", y: "70%", duration: 20, delay: 0, color: "rgba(139, 92, 246, 0.15)" },
     { shape: "circle", width: 200, height: 180, x: "10%", y: "20%", duration: 25, delay: 2, color: "rgba(6, 182, 212, 0.12)" },
@@ -34,9 +47,9 @@ const Hero = () => {
     { shape: "circle", width: 180, height: 180, x: "40%", y: "60%", duration: 28, delay: 1, color: "rgba(6, 182, 212, 0.1)" },
     { shape: "circle", width: 160, height: 140, x: "-10%", y: "30%", duration: 23, delay: 5, color: "rgba(139, 92, 246, 0.12)" },
     // Squares
-    { shape: "square", width: 140, height: 140, x: "20%", y: "10%", duration: 19, delay: 3, color: "rgba(6, 182, 212, 0.08)" },
-    { shape: "square", width: 100, height: 100, x: "-30%", y: "40%", duration: 24, delay: 2, color: "rgba(236, 72, 153, 0.1)" },
-    { shape: "square", width: 120, height: 120, x: "15%", y: "50%", duration: 21, delay: 0, color: "rgba(139, 92, 246, 0.1)" },
+    { shape: "square", width: 140, height: 140, x: "20%", y: "10%", duration: 19, delay: 3, color: "rgba(6, 182, 212, 0.08)", rotation: 15 },
+    { shape: "square", width: 100, height: 100, x: "-30%", y: "40%", duration: 24, delay: 2, color: "rgba(236, 72, 153, 0.1)", rotation: 30 },
+    { shape: "square", width: 120, height: 120, x: "15%", y: "50%", duration: 21, delay: 0, color: "rgba(139, 92, 246, 0.1)", rotation: 10 },
     // Triangles (represented as squares with rotation for simplicity)
     { shape: "triangle", width: 130, height: 130, x: "-20%", y: "60%", duration: 27, delay: 4, color: "rgba(6, 182, 212, 0.1)" },
     { shape: "triangle", width: 170, height: 170, x: "25%", y: "90%", duration: 22, delay: 1, color: "rgba(236, 72, 153, 0.08)" },
@@ -47,7 +60,7 @@ const Hero = () => {
     { shape: "plus", width: 70, height: 70, x: "-35%", y: "75%", duration: 24, delay: 4, color: "rgba(236, 72, 153, 0.1)" },
     // More background elements
     { shape: "circle", width: 200, height: 200, x: "40%", y: "30%", duration: 25, delay: 1, color: "rgba(139, 92, 246, 0.07)" },
-    { shape: "square", width: 160, height: 160, x: "-25%", y: "55%", duration: 22, delay: 0, color: "rgba(6, 182, 212, 0.05)" },
+    { shape: "square", width: 160, height: 160, x: "-25%", y: "55%", duration: 22, delay: 0, color: "rgba(6, 182, 212, 0.05)", rotation: 25 },
     { shape: "circle", width: 130, height: 130, x: "35%", y: "15%", duration: 26, delay: 3, color: "rgba(139, 92, 246, 0.06)" },
     { shape: "plus", width: 90, height: 90, x: "-5%", y: "85%", duration: 21, delay: 5, color: "rgba(236, 72, 153, 0.06)" },
     { shape: "triangle", width: 180, height: 180, x: "20%", y: "45%", duration: 27, delay: 2, color: "rgba(6, 182, 212, 0.07)" },
@@ -68,7 +81,7 @@ const Hero = () => {
   const parallaxFactor = 0.02;
 
   // Render particle based on shape
-  const renderParticle = (particle: any, index: number) => {
+  const renderParticle = (particle: Particle, index: number) => {
     // Base styles for all particles
     const baseStyle = {
       position: "absolute" as const,
@@ -88,11 +101,11 @@ const Hero = () => {
             style={{
               ...baseStyle,
               borderRadius: "10%",
-              rotate: Math.random() * 45,
+              rotate: particle.rotation || 0, // Use predefined rotation instead of Math.random()
             }}
             animate={{
               y: ["-100%", "200%"],
-              rotate: [0, 180],
+              rotate: [particle.rotation || 0, (particle.rotation || 0) + 180], // Use consistent rotation values
               opacity: [0, 0.5, 0],
             }}
             transition={{

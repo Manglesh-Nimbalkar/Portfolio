@@ -175,6 +175,7 @@ const Contact = () => {
                   rows={4}
                   className="w-full px-4 py-2 bg-gray-900/80 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white resize-none"
                   placeholder="Your Message"
+                  suppressHydrationWarning={true}
                 ></textarea>
               </div>
               
